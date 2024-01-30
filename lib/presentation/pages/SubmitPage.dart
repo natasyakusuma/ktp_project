@@ -51,9 +51,10 @@ class _SubmitPageState extends State<SubmitPage> {
 
   Future<void> _fetchProvincesData() async {
     try {
-      List<Provinces>? data = await ktpRepository.getProvince();
-      provinceItems = data ?? [];
-      setState(() {});
+      List<Provinces> data = await ktpRepository.getProvince();
+      setState(() {
+        provinceItems = data ?? [];
+      });
     } catch (e) {
       print('Error fetching province data: $e');
       // Handle error, show a message, or take appropriate action
@@ -86,9 +87,12 @@ class _SubmitPageState extends State<SubmitPage> {
                 SizedBox(height: 14),
                 DropdownButtonFormField<Provinces>(
                   hint: Text('Pilih Provinsi'),
-                  items: provinceItems?.map((province) => DropdownMenuItem<Provinces>(
-                      value: province,
-                      child: Text(province.name),)).toList(),
+                  items: provinceItems
+                      ?.map((province) => DropdownMenuItem<Provinces>(
+                            value: province,
+                            child: Text(province.name),
+                          ))
+                      .toList(),
                   onChanged: (Provinces? newValue) {
                     setState(() {
                       selectedProvince = newValue?.id ?? '';

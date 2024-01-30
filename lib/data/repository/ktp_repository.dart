@@ -23,7 +23,7 @@ class KTPRepository implements AbstractKTPRepository {
       return Provinces(
           id: json['id'],
           name: json['name'],
-          altName: json['altName'],
+          altName: json['altName'] ?? '',
           latitude: json['latitude'],
           longitude: json['longitude']);
     }).toList();
