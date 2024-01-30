@@ -20,12 +20,12 @@ class KTPRepository implements AbstractKTPRepository {
     List<dynamic> jsonList = jsonDecode(data);
     print('DATA REPO PROVINSI ${data}');
     List<Provinces> provinces = jsonList.map((json) {
-      return Provinces(
-          id: json['id'],
-          name: json['name'],
+      return Provinces( // pakai null safety buat jaga jaga
+          id: json['id'] ?? '',
+          name: json['name'] ?? '',
           altName: json['altName'] ?? '',
-          latitude: json['latitude'],
-          longitude: json['longitude']);
+          latitude: json['latitude'] ?? '',
+          longitude: json['longitude'] ?? '');
     }).toList();
 
     return provinces;
