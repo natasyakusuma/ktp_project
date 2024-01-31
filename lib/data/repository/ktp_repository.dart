@@ -5,13 +5,10 @@ import 'package:ktp_project/domain/entities/regencies.dart';
 
 import '../../domain/entities/province.dart';
 
-
 abstract class AbstractKTPRepository {
   Future<List<Provinces>> getProvince();
-  Future<List<Regencies>> getRegencies();
-
+  Future<List<Regencies>> getRegencies(String provinceId);
 }
-
 
 class KTPRepository implements AbstractKTPRepository {
   @override
@@ -20,7 +17,8 @@ class KTPRepository implements AbstractKTPRepository {
     List<dynamic> jsonList = jsonDecode(data);
     print('DATA REPO PROVINSI ${data}');
     List<Provinces> provinces = jsonList.map((json) {
-      return Provinces( // pakai null safety buat jaga jaga
+      return Provinces(
+          // pakai null safety buat jaga jaga
           id: json['id'] ?? '',
           name: json['name'] ?? '',
           altName: json['altName'] ?? '',
@@ -30,26 +28,27 @@ class KTPRepository implements AbstractKTPRepository {
 
     return provinces;
   }
+
   @override
-  Future<List<Regencies>> getRegencies() async {
+  Future<List<Regencies>> getRegencies(provinceId) async {
     String data = await rootBundle.loadString('assets/regencies.json');
     List<dynamic> jsonList = jsonDecode(data);
 
-    List<Regencies> regencies = jsonList.map((json) {
+    List<Regencies> regencies = jsonList
+        .map((json) {
       return Regencies(
-        id: json['id'],
-        provinceId: json['provinceId'],
-        name: json['name'],
-        altName: json['altName'],
-        latitude: json['latitude'],
-        longitude: json['longitude'],
+        id: json['id'] ?? '',
+        provinceId: json['provinceId'] ?? '',
+        name: json['name'] ?? '',
+        altName: json['altName'] ?? '',
+        latitude: json['latitude'] ?? '',
+        longitude: json['longitude'] ?? '',
       );
-    }).toList();
+    })
+        .where((regencies) => regencies.provinceId == provinceId)
+        .toList();
+
     return regencies;
   }
 }
-
-
-
-
 
